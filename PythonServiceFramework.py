@@ -23,6 +23,7 @@ dist\PythonServiceFramework.exe stop
 import win32serviceutil
 import win32service
 import win32event
+import servicemanager
 import sys
 from abc import ABC, abstractmethod
 
@@ -58,6 +59,8 @@ class PythonServiceFramework(win32serviceutil.ServiceFramework, ABC):
         """ Called when the service ask to run."""
         # Let the SCM be aware that the service is starting
         self.ReportServiceStatus(win32service.SERVICE_START_PENDING)
+        # Log to Event Viewer (Necessary)
+        servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,servicemanager.PYS_SERVICE_STARTED,(self._svc_name_,''))
         # Do Something at service initialize
         self.initialize()
         # Let the SCM be aware that the service is started and running
